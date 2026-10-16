@@ -20,4 +20,4 @@ The project-root `.env` file did not contain a value for `GEMINI_API_KEY`. The s
 Submit an app idea and confirm the server no longer logs that Gemini client initialization failed and that the response contains the expected AI-generated feature breakdown.
 
 ## Configuration Note
-The README currently refers to `.env.local`, but the server's `dotenv.config()` call loads `.env` by default. Unless the server is changed to load another file, configure the key in `.env`.
+The server's `dotenv.config()` call loads `.env` by default. Configure the key in the project-root `.env` file; `.env.local` is not loaded by the current server configuration.
