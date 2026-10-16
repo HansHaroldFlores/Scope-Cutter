@@ -1,0 +1,6 @@
+{
+  "name": "Scope Cutter",
+  "description": "Decomposes massive, vague app ideas into clean, standalone, bite-sized features prioritized by must-haves, nice-to-haves, and cut-its.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
