@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   Scissors, 
   Copy, 
@@ -10,11 +10,23 @@ import {
   ArrowLeft, 
   AlertTriangle, 
   Download, 
+  Upload,
   HelpCircle,
   RefreshCw,
   Info
 } from "lucide-react";
 import { FeatureCard, FeatureCategory, EffortLevel } from "./types";
+
+function isFeatureCard(value: unknown): value is FeatureCard {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const card = value as Record<string, unknown>;
+  return typeof card.id === "string" &&
+    typeof card.title === "string" &&
+    typeof card.description === "string" &&
+    typeof card.prompt === "string" &&
+    (card.effort === "Small" || card.effort === "Medium" || card.effort === "Large") &&
+    (card.category === "must" || card.category === "nice" || card.category === "cut");
+}
 
 const SAMPLE_IDEAS = [
   {
@@ -70,7 +82,9 @@ export default function App() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
   const [features, setFeatures] = useState<FeatureCard[]>([]);
+  const importInputRef = useRef<HTMLInputElement>(null);
   const [undoState, setUndoState] = useState<{ features: FeatureCard[]; message: string } | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [effortFilter, setEffortFilter] = useState<EffortLevel | "All">("All");
@@ -326,6 +340,46 @@ export default function App() {
     URL.revokeObjectURL(url);
   };
 
+  const exportFeatures = () => {
+    const blob = new Blob([JSON.stringify(features, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "Scope_Cutter_Features.json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const importFeatures = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setImportError(null);
+    let importedFeatures: unknown;
+    try {
+      importedFeatures = JSON.parse(await file.text());
+    } catch {
+      setImportError("The selected file is not valid JSON.");
+      return;
+    }
+
+    if (!Array.isArray(importedFeatures) || !importedFeatures.every(isFeatureCard)) {
+      setImportError("Invalid feature data. Expected an array of feature cards with string id, title, description, and prompt fields, a valid effort, and a valid category.");
+      return;
+    }
+
+    if (!window.confirm("Importing will replace your current board. Continue?")) return;
+
+    try {
+      saveToCache(importedFeatures);
+    } catch {
+      setImportError("The file is valid, but the board could not be saved to browser storage.");
+    }
+  };
+
   const copyMustHavePrompts = async () => {
     if (mustHaves.length === 0) return;
     let markdown = `# Must Have MVP Prompts\n\n`;
@@ -365,7 +419,7 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex flex-wrap items-center gap-2.5">
             {features.length > 0 && (
               <>
                 {mustHaves.length > 0 && (
@@ -391,6 +445,15 @@ export default function App() {
                   <span>Download Plan</span>
                 </button>
                 <button
+                  type="button"
+                  onClick={exportFeatures}
+                  className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition cursor-pointer"
+                  title="Export feature cards as a JSON file"
+                >
+                  <Download className="w-4 h-4 text-cyan-400" />
+                  <span>Export JSON</span>
+                </button>
+                <button
                   onClick={clearAll}
                   className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-red-950/40 text-red-400 border border-red-900/50 hover:bg-red-900/30 transition cursor-pointer"
                 >
@@ -399,8 +462,46 @@ export default function App() {
                 </button>
               </>
             )}
+            {features.length === 0 && (
+              <button
+                type="button"
+                onClick={exportFeatures}
+                className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition cursor-pointer"
+                title="Export feature cards as a JSON file"
+              >
+                <Download className="w-4 h-4 text-cyan-400" />
+                <span>Export JSON</span>
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => importInputRef.current?.click()}
+              className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition cursor-pointer"
+              title="Import feature cards from a JSON file"
+            >
+              <Upload className="w-4 h-4 text-cyan-400" />
+              <span>Import JSON</span>
+            </button>
+            <input
+              ref={importInputRef}
+              type="file"
+              accept=".json,application/json"
+              onChange={importFeatures}
+              className="hidden"
+            />
           </div>
         </header>
+        {importError && (
+          <div role="alert" className="bg-red-950/20 border border-red-900/40 p-4 rounded-xl text-red-200 text-sm">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+              <div>
+                <span className="font-semibold block text-red-400">Could not import JSON</span>
+                <p className="text-xs text-slate-300">{importError}</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Input area */}
         <section className="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-xl shadow-black/10 backdrop-blur-sm space-y-4">
