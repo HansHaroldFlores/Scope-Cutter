@@ -444,35 +444,17 @@ export default function App() {
                   <Download className="w-4 h-4 text-cyan-400" />
                   <span>Download Plan</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={exportFeatures}
-                  className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition cursor-pointer"
-                  title="Export feature cards as a JSON file"
-                >
-                  <Download className="w-4 h-4 text-cyan-400" />
-                  <span>Export JSON</span>
-                </button>
-                <button
-                  onClick={clearAll}
-                  className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-red-950/40 text-red-400 border border-red-900/50 hover:bg-red-900/30 transition cursor-pointer"
-                >
-                  <Trash2 className="w-4 h-4" />
-                  <span>Clear Board</span>
-                </button>
               </>
             )}
-            {features.length === 0 && (
-              <button
-                type="button"
-                onClick={exportFeatures}
-                className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition cursor-pointer"
-                title="Export feature cards as a JSON file"
-              >
-                <Download className="w-4 h-4 text-cyan-400" />
-                <span>Export JSON</span>
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={exportFeatures}
+              className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition cursor-pointer"
+              title="Export feature cards as a JSON file"
+            >
+              <Download className="w-4 h-4 text-cyan-400" />
+              <span>Export JSON</span>
+            </button>
             <button
               type="button"
               onClick={() => importInputRef.current?.click()}
@@ -489,6 +471,15 @@ export default function App() {
               onChange={importFeatures}
               className="hidden"
             />
+            {features.length > 0 && (
+              <button
+                onClick={clearAll}
+                className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-red-950/40 text-red-400 border border-red-900/50 hover:bg-red-900/30 transition cursor-pointer"
+              >
+                <Trash2 className="w-4 h-4" />
+                <span>Clear Board</span>
+              </button>
+            )}
           </div>
         </header>
         {importError && (
