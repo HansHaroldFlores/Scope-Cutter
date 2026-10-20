@@ -507,7 +507,7 @@ export default function App() {
         {/* Input area */}
         <section className="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-xl shadow-black/10 backdrop-blur-sm space-y-4">
           <div className="space-y-1">
-            <label className="block text-sm font-semibold tracking-wide text-slate-200 uppercase font-display">
+            <label htmlFor="idea-input" className="block text-sm font-semibold tracking-wide text-slate-200 uppercase font-display">
               Describe your big app idea
             </label>
             <p className="text-xs text-slate-400">
@@ -519,7 +519,6 @@ export default function App() {
             <textarea
               id="idea-input"
               name="idea-input"
-              aria-label="App idea"
               className="w-full h-32 md:h-36 bg-[#070a13] border border-slate-800 rounded-xl p-4 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition font-sans text-sm resize-none"
               placeholder="e.g., I want to build a fitness social network where people can post their workout streaks, find gym buddies nearby with geolocation, integrate with Strava, have a full audio streaming coach inside, and generate smart training exercises using custom machine learning algorithms..."
               value={idea}
