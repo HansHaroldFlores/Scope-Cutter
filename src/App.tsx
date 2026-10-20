@@ -58,6 +58,16 @@ async function copyText(text: string): Promise<boolean> {
 
 export default function App() {
   const [idea, setIdea] = useState("");
+  const [ideaHistory, setIdeaHistory] = useState<string[]>(() => {
+    try {
+      const cached = JSON.parse(localStorage.getItem("scope_cutter_idea_history") || "[]");
+      return Array.isArray(cached)
+        ? [...new Set(cached.filter((item): item is string => typeof item === "string" && !!item.trim()))].slice(0, 5)
+        : [];
+    } catch {
+      return [];
+    }
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [features, setFeatures] = useState<FeatureCard[]>([]);
@@ -74,6 +84,18 @@ export default function App() {
   const [newDesc, setNewDesc] = useState("");
   const [newEffort, setNewEffort] = useState<EffortLevel>("Medium");
   const [newPrompt, setNewPrompt] = useState("");
+
+  useEffect(() => {
+    try {
+      if (ideaHistory.length > 0) {
+        localStorage.setItem("scope_cutter_idea_history", JSON.stringify(ideaHistory));
+      } else {
+        localStorage.removeItem("scope_cutter_idea_history");
+      }
+    } catch {
+      // Keep history usable in memory when browser storage is unavailable.
+    }
+  }, [ideaHistory]);
 
   // Default initial instructions if no features loaded yet
   useEffect(() => {
@@ -103,6 +125,8 @@ export default function App() {
 
   const handleDecompose = async () => {
     if (!idea.trim()) return;
+    const submittedIdea = idea.trim();
+    setIdeaHistory(history => [submittedIdea, ...history.filter(item => item !== submittedIdea)].slice(0, 5));
     setLoading(true);
     setError(null);
 
@@ -406,6 +430,35 @@ export default function App() {
               </button>
             )}
           </div>
+
+          {ideaHistory.length > 0 && (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-medium text-slate-300">Recent ideas</span>
+                <button
+                  type="button"
+                  onClick={() => setIdeaHistory([])}
+                  className="text-slate-400 hover:text-white underline cursor-pointer"
+                >
+                  Clear history
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {ideaHistory.map(previousIdea => (
+                  <button
+                    key={previousIdea}
+                    type="button"
+                    onClick={() => setIdea(previousIdea)}
+                    disabled={loading}
+                    title={previousIdea}
+                    className="max-w-full truncate rounded-full border border-slate-700 bg-slate-800/50 px-3 py-1 text-xs text-slate-300 hover:border-cyan-500 hover:text-cyan-400 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {previousIdea}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Quick Preset Ideas to kickstart */}
           <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
