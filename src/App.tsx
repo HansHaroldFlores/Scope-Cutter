@@ -94,7 +94,9 @@ export default function App() {
     return () => window.clearTimeout(timeoutId);
   }, [undoState]);
 
+  // Any board change dismisses a pending undo so it can't revert later edits
   const saveToCache = (updated: FeatureCard[]) => {
+    setUndoState(null);
     setFeatures(updated);
     localStorage.setItem("scope_cutter_features", JSON.stringify(updated));
   };
@@ -202,14 +204,13 @@ export default function App() {
 
   const deleteCard = (id: string) => {
     const updated = features.filter(f => f.id !== id);
-    setUndoState({ features, message: "Card deleted." });
     saveToCache(updated);
+    setUndoState({ features, message: "Card deleted." });
   };
 
   const undoDelete = () => {
     if (!undoState) return;
     saveToCache(undoState.features);
-    setUndoState(null);
   };
 
   const addCustomCard = (category: FeatureCategory) => {
@@ -242,8 +243,8 @@ export default function App() {
 
   const clearAll = () => {
     if (window.confirm("Are you sure you want to clear your current board?")) {
-      setUndoState({ features, message: "Board cleared." });
       saveToCache([]);
+      setUndoState({ features, message: "Board cleared." });
     }
   };
 
