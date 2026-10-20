@@ -519,7 +519,7 @@ export default function App() {
             <textarea
               id="idea-input"
               name="idea-input"
-              className="w-full h-32 md:h-36 bg-[#070a13] border border-slate-800 rounded-xl p-4 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition font-sans text-sm resize-none"
+              className="w-full h-32 md:h-36 bg-[#070a13] border border-slate-800 rounded-xl p-4 pr-20 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition font-sans text-sm resize-none"
               placeholder="e.g., I want to build a fitness social network where people can post their workout streaks, find gym buddies nearby with geolocation, integrate with Strava, have a full audio streaming coach inside, and generate smart training exercises using custom machine learning algorithms..."
               value={idea}
               onChange={(e) => setIdea(e.target.value)}
