@@ -233,6 +233,8 @@ export default function App() {
   const mustHaves = features.filter(f => f.category === "must");
   const niceToHaves = features.filter(f => f.category === "nice");
   const cutIts = features.filter(f => f.category === "cut");
+  const getEffortScore = (cards: FeatureCard[]) =>
+    cards.reduce((total, card) => total + ({ Small: 1, Medium: 3, Large: 5 }[card.effort] || 0), 0);
 
   const hasScopeCreep = mustHaves.length > 5;
 
@@ -527,7 +529,7 @@ export default function App() {
                   <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-mono">Must Have (MVP)</h2>
                 </div>
                 <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/50 font-semibold font-mono">
-                  {mustHaves.length}
+                  {mustHaves.length} cards · {getEffortScore(mustHaves)} pts
                 </span>
               </div>
 
@@ -564,7 +566,7 @@ export default function App() {
                   <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-mono">Nice to Have</h2>
                 </div>
                 <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/50 font-semibold font-mono">
-                  {niceToHaves.length}
+                  {niceToHaves.length} cards · {getEffortScore(niceToHaves)} pts
                 </span>
               </div>
 
@@ -600,7 +602,7 @@ export default function App() {
                   <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-mono">Cut It</h2>
                 </div>
                 <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/50 font-semibold font-mono">
-                  {cutIts.length}
+                  {cutIts.length} cards · {getEffortScore(cutIts)} pts
                 </span>
               </div>
 
