@@ -61,6 +61,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [features, setFeatures] = useState<FeatureCard[]>([]);
+  const [undoState, setUndoState] = useState<{ features: FeatureCard[]; message: string } | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [effortFilter, setEffortFilter] = useState<EffortLevel | "All">("All");
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -86,6 +87,12 @@ export default function App() {
       }
     }
   }, []);
+
+  useEffect(() => {
+    if (!undoState) return;
+    const timeoutId = window.setTimeout(() => setUndoState(null), 5000);
+    return () => window.clearTimeout(timeoutId);
+  }, [undoState]);
 
   const saveToCache = (updated: FeatureCard[]) => {
     setFeatures(updated);
@@ -195,7 +202,14 @@ export default function App() {
 
   const deleteCard = (id: string) => {
     const updated = features.filter(f => f.id !== id);
+    setUndoState({ features, message: "Card deleted." });
     saveToCache(updated);
+  };
+
+  const undoDelete = () => {
+    if (!undoState) return;
+    saveToCache(undoState.features);
+    setUndoState(null);
   };
 
   const addCustomCard = (category: FeatureCategory) => {
@@ -228,6 +242,7 @@ export default function App() {
 
   const clearAll = () => {
     if (window.confirm("Are you sure you want to clear your current board?")) {
+      setUndoState({ features, message: "Board cleared." });
       saveToCache([]);
     }
   };
@@ -673,6 +688,22 @@ export default function App() {
         )}
 
       </div>
+
+      {undoState && (
+        <div
+          role="status"
+          className="fixed bottom-4 left-4 right-4 sm:left-auto z-[60] flex items-center justify-between gap-4 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-200 shadow-xl"
+        >
+          <span>{undoState.message}</span>
+          <button
+            type="button"
+            onClick={undoDelete}
+            className="font-semibold text-cyan-400 hover:text-cyan-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-400 rounded cursor-pointer"
+          >
+            Undo
+          </button>
+        </div>
+      )}
 
       {/* --- ADD CARD MODAL --- */}
       {showAddForm && (
