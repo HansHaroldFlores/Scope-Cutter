@@ -61,6 +61,8 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [features, setFeatures] = useState<FeatureCard[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [effortFilter, setEffortFilter] = useState<EffortLevel | "All">("All");
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [editingCard, setEditingCard] = useState<FeatureCard | null>(null);
   const [copiedMustHaves, setCopiedMustHaves] = useState(false);
@@ -233,6 +235,14 @@ export default function App() {
   const mustHaves = features.filter(f => f.category === "must");
   const niceToHaves = features.filter(f => f.category === "nice");
   const cutIts = features.filter(f => f.category === "cut");
+  const normalizedSearch = searchQuery.trim().toLowerCase();
+  const matchesFilters = (card: FeatureCard) =>
+    (effortFilter === "All" || card.effort === effortFilter) &&
+    (card.title.toLowerCase().includes(normalizedSearch) ||
+      card.description.toLowerCase().includes(normalizedSearch));
+  const visibleMustHaves = mustHaves.filter(matchesFilters);
+  const visibleNiceToHaves = niceToHaves.filter(matchesFilters);
+  const visibleCutIts = cutIts.filter(matchesFilters);
   const getEffortScore = (cards: FeatureCard[]) =>
     cards.reduce((total, card) => total + ({ Small: 1, Medium: 3, Large: 5 }[card.effort] || 0), 0);
 
@@ -512,6 +522,40 @@ export default function App() {
           </div>
         )}
 
+        {features.length > 0 && (
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1 space-y-1.5">
+              <label htmlFor="board-search" className="block text-xs font-semibold text-slate-300">
+                Search cards
+              </label>
+              <input
+                id="board-search"
+                type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by title or description"
+                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label htmlFor="board-effort" className="block text-xs font-semibold text-slate-300">
+                Effort
+              </label>
+              <select
+                id="board-effort"
+                value={effortFilter}
+                onChange={(e) => setEffortFilter(e.target.value as EffortLevel | "All")}
+                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500"
+              >
+                <option value="All">All</option>
+                <option value="Small">Small</option>
+                <option value="Medium">Medium</option>
+                <option value="Large">Large</option>
+              </select>
+            </div>
+          </div>
+        )}
+
         {/* Column board */}
         {features.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -543,12 +587,12 @@ export default function App() {
               </button>
 
               <div className="flex-1 space-y-5 overflow-y-auto max-h-[700px] pr-1">
-                {mustHaves.length === 0 ? (
+                {visibleMustHaves.length === 0 ? (
                   <div className="h-40 border border-dashed border-slate-800/40 rounded-xl flex items-center justify-center text-xs text-slate-500">
-                    Drag items here or add a card
+                    {mustHaves.length === 0 ? "Drag items here or add a card" : "No matching cards"}
                   </div>
                 ) : (
-                  mustHaves.map(f => renderCard(f))
+                  visibleMustHaves.map(f => renderCard(f))
                 )}
               </div>
             </div>
@@ -579,12 +623,12 @@ export default function App() {
               </button>
 
               <div className="flex-1 space-y-5 overflow-y-auto max-h-[700px] pr-1">
-                {niceToHaves.length === 0 ? (
+                {visibleNiceToHaves.length === 0 ? (
                   <div className="h-40 border border-dashed border-slate-800/40 rounded-xl flex items-center justify-center text-xs text-slate-500">
-                    Drag items here or add a card
+                    {niceToHaves.length === 0 ? "Drag items here or add a card" : "No matching cards"}
                   </div>
                 ) : (
-                  niceToHaves.map(f => renderCard(f))
+                  visibleNiceToHaves.map(f => renderCard(f))
                 )}
               </div>
             </div>
@@ -615,12 +659,12 @@ export default function App() {
               </button>
 
               <div className="flex-1 space-y-5 overflow-y-auto max-h-[700px] pr-1">
-                {cutIts.length === 0 ? (
+                {visibleCutIts.length === 0 ? (
                   <div className="h-40 border border-dashed border-slate-800/40 rounded-xl flex items-center justify-center text-xs text-slate-500">
-                    Drag items here or add a card
+                    {cutIts.length === 0 ? "Drag items here or add a card" : "No matching cards"}
                   </div>
                 ) : (
-                  cutIts.map(f => renderCard(f))
+                  visibleCutIts.map(f => renderCard(f))
                 )}
               </div>
             </div>
