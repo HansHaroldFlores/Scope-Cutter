@@ -472,6 +472,9 @@ export default function App() {
               <span>Import JSON</span>
             </button>
             <input
+              id="import-json-file"
+              name="import-json-file"
+              aria-label="Import board JSON file"
               ref={importInputRef}
               type="file"
               accept=".json,application/json"
@@ -514,6 +517,9 @@ export default function App() {
 
           <div className="relative">
             <textarea
+              id="idea-input"
+              name="idea-input"
+              aria-label="App idea"
               className="w-full h-32 md:h-36 bg-[#070a13] border border-slate-800 rounded-xl p-4 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition font-sans text-sm resize-none"
               placeholder="e.g., I want to build a fitness social network where people can post their workout streaks, find gym buddies nearby with geolocation, integrate with Strava, have a full audio streaming coach inside, and generate smart training exercises using custom machine learning algorithms..."
               value={idea}
@@ -705,7 +711,7 @@ export default function App() {
                 Search cards
               </label>
               <input
-                id="board-search"
+                id="board-search" name="board-search"
                 type="search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -718,7 +724,7 @@ export default function App() {
                 Effort
               </label>
               <select
-                id="board-effort"
+                id="board-effort" name="board-effort"
                 value={effortFilter}
                 onChange={(e) => setEffortFilter(e.target.value as EffortLevel | "All")}
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500"
@@ -885,8 +891,10 @@ export default function App() {
 
             <div className="p-6 space-y-4">
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-slate-300 uppercase">Title</label>
+                <label htmlFor="new-card-title" className="block text-xs font-semibold text-slate-300 uppercase">Title</label>
                 <input
+                  id="new-card-title"
+                  name="new-card-title"
                   type="text"
                   placeholder="e.g., Google Maps Store Finder"
                   className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
@@ -896,8 +904,10 @@ export default function App() {
               </div>
 
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-slate-300 uppercase">One-Line Description</label>
+                <label htmlFor="new-card-description" className="block text-xs font-semibold text-slate-300 uppercase">One-Line Description</label>
                 <input
+                  id="new-card-description"
+                  name="new-card-description"
                   type="text"
                   placeholder="Allows searchers to browse stores on Google Map viewport"
                   className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
@@ -908,8 +918,10 @@ export default function App() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-slate-300 uppercase">Effort Level</label>
+                  <label htmlFor="new-card-effort" className="block text-xs font-semibold text-slate-300 uppercase">Effort Level</label>
                   <select
+                    id="new-card-effort"
+                    name="new-card-effort"
                     className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                     value={newEffort}
                     onChange={(e) => setNewEffort(e.target.value as EffortLevel)}
@@ -923,10 +935,12 @@ export default function App() {
 
               <div className="space-y-1">
                 <div className="flex justify-between items-center">
-                  <label className="block text-xs font-semibold text-slate-300 uppercase">AI Builder Prompt (Optional)</label>
+                  <label htmlFor="new-card-prompt" className="block text-xs font-semibold text-slate-300 uppercase">AI Builder Prompt (Optional)</label>
                   <span className="text-[10px] text-slate-500">Auto-generated if left empty</span>
                 </div>
                 <textarea
+                  id="new-card-prompt"
+                  name="new-card-prompt"
                   placeholder="Specify exact tech stack, API requirements, visual styling instruction, or data structures for the AI builder..."
                   className="w-full h-24 bg-slate-950 border border-slate-850 rounded-lg p-3 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"
                   value={newPrompt}
@@ -971,8 +985,10 @@ export default function App() {
 
             <div className="p-6 space-y-4">
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-slate-300 uppercase">Title</label>
+                <label htmlFor="edit-card-title" className="block text-xs font-semibold text-slate-300 uppercase">Title</label>
                 <input
+                  id="edit-card-title"
+                  name="edit-card-title"
                   type="text"
                   className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                   value={editingCard.title}
@@ -981,8 +997,10 @@ export default function App() {
               </div>
 
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-slate-300 uppercase">One-Line Description</label>
+                <label htmlFor="edit-card-description" className="block text-xs font-semibold text-slate-300 uppercase">One-Line Description</label>
                 <input
+                  id="edit-card-description"
+                  name="edit-card-description"
                   type="text"
                   className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                   value={editingCard.description}
@@ -992,8 +1010,10 @@ export default function App() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-slate-300 uppercase">Effort Level</label>
+                  <label htmlFor="edit-card-effort" className="block text-xs font-semibold text-slate-300 uppercase">Effort Level</label>
                   <select
+                    id="edit-card-effort"
+                    name="edit-card-effort"
                     className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                     value={editingCard.effort}
                     onChange={(e) => setEditingCard({ ...editingCard, effort: e.target.value as EffortLevel })}
@@ -1005,8 +1025,10 @@ export default function App() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-slate-300 uppercase">Category</label>
+                  <label htmlFor="edit-card-category" className="block text-xs font-semibold text-slate-300 uppercase">Category</label>
                   <select
+                    id="edit-card-category"
+                    name="edit-card-category"
                     className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                     value={editingCard.category}
                     onChange={(e) => setEditingCard({ ...editingCard, category: e.target.value as FeatureCategory })}
@@ -1019,8 +1041,10 @@ export default function App() {
               </div>
 
               <div className="space-y-1">
-                <label className="block text-xs font-semibold text-slate-300 uppercase">AI Developer Prompt</label>
+                <label htmlFor="edit-card-prompt" className="block text-xs font-semibold text-slate-300 uppercase">AI Developer Prompt</label>
                 <textarea
+                  id="edit-card-prompt"
+                  name="edit-card-prompt"
                   className="w-full h-36 bg-slate-950 border border-slate-850 rounded-lg p-3 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono resize-none"
                   value={editingCard.prompt}
                   onChange={(e) => setEditingCard({ ...editingCard, prompt: e.target.value })}
