@@ -17,9 +17,9 @@ let aiClient: GoogleGenAI | null = null;
 
 function getGeminiClient(): GoogleGenAI {
   if (!aiClient) {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey || apiKey === "MY_GEMINI_API_KEY" || apiKey.trim() === "") {
-      throw new Error("GEMINI_API_KEY is not configured or still has the placeholder value. Please go to the 'Secrets' menu in the top right to configure your actual Gemini API key.");
+    const apiKey = process.env.GEMINI_API_KEY?.trim();
+    if (!apiKey || apiKey === "MY_GEMINI_API_KEY" || apiKey === "your_actual_api_key") {
+      throw new Error("GEMINI_API_KEY is not configured or still has the placeholder value. Set GEMINI_API_KEY in the project's .env file and restart the server.");
     }
     aiClient = new GoogleGenAI({
       apiKey,
@@ -304,6 +304,11 @@ CRITICAL: Return RAW JSON only. Do NOT include any explanations, introduction, m
           throw new Error("Response JSON did not contain 'features' array.");
         }
       } catch (err: any) {
+        const status = Number(err.status ?? err.code ?? err.response?.status);
+        if ([400, 401, 403].includes(status) || err.message?.includes("API_KEY_INVALID")) {
+          console.warn("[Scope Cutter Server] Gemini rejected the API key. Set GEMINI_API_KEY in .env and restart the server. Using heuristic fallback.");
+          return res.json(getFallbackFeatures(idea));
+        }
         lastError = err;
         console.warn(`Decompose attempt ${i + 1} failed:`, err);
       }

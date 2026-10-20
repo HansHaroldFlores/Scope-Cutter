@@ -518,6 +518,14 @@ export default function App() {
               placeholder="e.g., I want to build a fitness social network where people can post their workout streaks, find gym buddies nearby with geolocation, integrate with Strava, have a full audio streaming coach inside, and generate smart training exercises using custom machine learning algorithms..."
               value={idea}
               onChange={(e) => setIdea(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && !e.nativeEvent.isComposing) {
+                  e.preventDefault();
+                  if (!loading && !e.repeat) {
+                    void handleDecompose();
+                  }
+                }
+              }}
               disabled={loading}
             />
             {idea && (
