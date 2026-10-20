@@ -241,14 +241,15 @@ CRITICAL: Return RAW JSON only. Do NOT include any explanations, introduction, m
 
     const contents = `Decompose the following app idea: "${idea.trim()}"`;
 
-    let attempts = 2;
-    let lastError = null;
+    // Primary model first; the lite model is a backup when the primary is overloaded
+    const models = ["gemini-3.5-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite"];
     let parsedData = null;
 
-    for (let i = 0; i < attempts; i++) {
+    for (let i = 0; i < models.length; i++) {
+      if (i > 0) await new Promise(resolve => setTimeout(resolve, 1000 * i));
       try {
         const response = await ai.models.generateContent({
-          model: "gemini-3.5-flash",
+          model: models[i],
           contents,
           config: {
             systemInstruction,
@@ -265,8 +266,8 @@ CRITICAL: Return RAW JSON only. Do NOT include any explanations, introduction, m
                       id: { type: Type.STRING, description: "A unique short alphanumeric ID (e.g., 'feat-1')." },
                       title: { type: Type.STRING, description: "Crisp feature title (2-4 words)." },
                       description: { type: Type.STRING, description: "A clear one-line description of the feature." },
-                      effort: { type: Type.STRING, description: "Estimated effort: Must be exactly 'Small', 'Medium', or 'Large'." },
-                      category: { type: Type.STRING, description: "Must be exactly 'must', 'nice', or 'cut'." },
+                      effort: { type: Type.STRING, enum: ["Small", "Medium", "Large"], description: "Estimated effort: Must be exactly 'Small', 'Medium', or 'Large'." },
+                      category: { type: Type.STRING, enum: ["must", "nice", "cut"], description: "Must be exactly 'must', 'nice', or 'cut'." },
                       prompt: { type: Type.STRING, description: "A self-contained, descriptive build prompt for this feature." }
                     },
                     required: ["id", "title", "description", "effort", "category", "prompt"]
@@ -279,9 +280,11 @@ CRITICAL: Return RAW JSON only. Do NOT include any explanations, introduction, m
         });
 
         const text = response.text;
-        console.log("=== RAW GEMINI MODEL RESPONSE ===");
-        console.log(text);
-        console.log("=================================");
+        if (process.env.DEBUG_GEMINI) {
+          console.log("=== RAW GEMINI MODEL RESPONSE ===");
+          console.log(text);
+          console.log("=================================");
+        }
 
         if (!text) {
           throw new Error("No response text received from Gemini.");
@@ -309,8 +312,7 @@ CRITICAL: Return RAW JSON only. Do NOT include any explanations, introduction, m
           console.warn("[Scope Cutter Server] Gemini rejected the API key. Set GEMINI_API_KEY in .env and restart the server. Using heuristic fallback.");
           return res.json(getFallbackFeatures(idea));
         }
-        lastError = err;
-        console.warn(`Decompose attempt ${i + 1} failed:`, err);
+        console.warn(`[Scope Cutter Server] ${models[i]} attempt ${i + 1} failed${Number.isFinite(status) ? ` (${status})` : ""}: ${(String(err.message ?? err).match(/"message":"([^"]+)"/)?.[1] ?? String(err.message ?? err)).slice(0, 120)}`);
       }
     }
 
