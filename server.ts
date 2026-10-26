@@ -244,14 +244,22 @@ CRITICAL: Return RAW JSON only. Do NOT include any explanations, introduction, m
     // Primary model first; the lite model is a backup when the primary is overloaded
     const models = ["gemini-3.5-flash", "gemini-3.5-flash", "gemini-3.5-flash-lite"];
     let parsedData = null;
+    // Stay under the browser's 30s request timeout; past this, answer with the fallback
+    const deadline = Date.now() + 25000;
 
     for (let i = 0; i < models.length; i++) {
       if (i > 0) await new Promise(resolve => setTimeout(resolve, 1000 * i));
+      const remaining = deadline - Date.now();
+      if (remaining < 2000) {
+        console.warn("[Scope Cutter Server] Gemini time budget used up.");
+        break;
+      }
       try {
         const response = await ai.models.generateContent({
           model: models[i],
           contents,
           config: {
+            abortSignal: AbortSignal.timeout(remaining),
             systemInstruction,
             responseMimeType: "application/json",
             responseSchema: {
