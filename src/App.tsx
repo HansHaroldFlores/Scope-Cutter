@@ -401,7 +401,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] text-[#f1f5f9] px-4 py-8 md:px-8 selection:bg-cyan-500 selection:text-black">
+    <div className="min-h-screen bg-transparent text-[#f1f5f9] px-4 py-8 md:px-8 selection:bg-cyan-500 selection:text-black">
       {/* Container to restrict max width for sleek desktop layout */}
       <div className="max-w-7xl mx-auto space-y-8" id="scope-cutter-app">
         
@@ -412,9 +412,9 @@ export default function App() {
               <Scissors className="w-7 h-7 text-black" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold font-display tracking-tight text-white flex items-center gap-2">
+              <h1 className="text-3xl font-bold font-display tracking-widest text-white uppercase flex items-center gap-2">
                 Scope Cutter
-                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-cyan-950/50 text-cyan-400 border border-cyan-850">
+                <span className="text-xs font-semibold px-2.5 py-0.5 rounded-none bg-cyan-950/50 text-cyan-400 border border-cyan-850">
                   AI Decomposer
                 </span>
               </h1>
@@ -621,13 +621,13 @@ export default function App() {
 
         {/* Scope creep banner */}
         {features.length > 0 && (
-          <div className={`p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all duration-300 ${
+          <div className={`p-4 rounded-none border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all duration-300 ${
             hasScopeCreep 
-              ? "bg-red-950/30 border-red-900/60 text-red-200" 
+              ? "bg-yellow-950/50 border-yellow-400/80 text-yellow-100 shadow-[0_0_18px_rgba(250,204,21,0.35)]"
               : "bg-cyan-950/25 border-cyan-900/50 text-cyan-200"
           }`}>
             <div className="flex items-start gap-3">
-              <div className={`p-2 rounded-lg shrink-0 ${hasScopeCreep ? "bg-red-900/30 text-red-400" : "bg-cyan-950 text-cyan-400"}`}>
+              <div className={`p-2 rounded-none shrink-0 ${hasScopeCreep ? "bg-yellow-900/50 text-yellow-300" : "bg-cyan-950 text-cyan-400"}`}>
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <div>
@@ -645,7 +645,7 @@ export default function App() {
 
             <div className="flex items-center gap-1.5 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800/80 text-xs shrink-0 font-mono">
               <span>MVP Count:</span>
-              <span className={`font-bold ${hasScopeCreep ? "text-red-400 font-bold" : "text-emerald-400 font-bold"}`}>
+              <span className={`font-bold ${hasScopeCreep ? "text-yellow-300 font-bold" : "text-emerald-400 font-bold"}`}>
                 {mustHaves.length} / 5 max
               </span>
             </div>
