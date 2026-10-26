@@ -37,10 +37,11 @@
   --color-emerald-400: #5d796a;
   --color-emerald-500: #6d897a;
 
-  --color-amber-950: #edf2ee;
-  --color-amber-900: #dce6df;
-  --color-amber-400: #5d796a;
-  --color-amber-500: #6d897a;
+  --color-amber-950: #fbf4e6;
+  --color-amber-900: #f3e6c9;
+  --color-amber-200: #705b32;
+  --color-amber-400: #9a742f;
+  --color-amber-500: #ad8540;
 
   --color-rose-950: #edf2ee;
   --color-rose-900: #dce6df;
@@ -48,11 +49,12 @@
   --color-rose-500: #6d897a;
   --color-rose-400: #5d796a;
 
-  --color-red-950: #edf2ee;
-  --color-red-900: #dce6df;
-  --color-red-800: #dce6df;
-  --color-red-400: #5d796a;
-  --color-red-300: #506d5e;
+  --color-red-950: #fbefed;
+  --color-red-900: #f4ddd8;
+  --color-red-800: #e9c8c1;
+  --color-red-200: #70423c;
+  --color-red-400: #a75a4e;
+  --color-red-300: #914a40;
 
   --color-yellow-400: #5d796a;
   --color-yellow-300: #5d796a;

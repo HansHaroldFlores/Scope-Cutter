@@ -623,11 +623,11 @@ export default function App() {
         {features.length > 0 && (
           <div className={`p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all duration-300 ${
             hasScopeCreep 
-              ? "bg-red-950/30 border-red-900/60 text-red-200" 
+              ? "bg-amber-950/30 border-amber-900/60 text-amber-200" 
               : "bg-cyan-950/25 border-cyan-900/50 text-cyan-200"
           }`}>
             <div className="flex items-start gap-3">
-              <div className={`p-2 rounded-lg shrink-0 ${hasScopeCreep ? "bg-red-900/30 text-red-400" : "bg-cyan-950 text-cyan-400"}`}>
+              <div className={`p-2 rounded-lg shrink-0 ${hasScopeCreep ? "bg-amber-900/30 text-amber-400" : "bg-cyan-950 text-cyan-400"}`}>
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <div>
@@ -645,7 +645,7 @@ export default function App() {
 
             <div className="flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 text-xs shrink-0 font-sans">
               <span>MVP Count:</span>
-              <span className={`font-bold ${hasScopeCreep ? "text-red-400 font-bold" : "text-emerald-400 font-bold"}`}>
+              <span className={`font-bold ${hasScopeCreep ? "text-amber-400 font-bold" : "text-emerald-400 font-bold"}`}>
                 {mustHaves.length} / 5 max
               </span>
             </div>
