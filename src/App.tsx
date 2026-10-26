@@ -635,7 +635,7 @@ export default function App() {
                   {hasScopeCreep ? "⚠️ Scope Creep Warning Active" : "🟢 Scope Healthy"}
                 </h3>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  You have                   <strong className="text-slate-100">{mustHaves.length}</strong> items in <strong className="text-emerald-400">Must Have (MVP)</strong>. 
+                  You have <strong className="text-slate-100">{mustHaves.length}</strong> items in <strong className="text-emerald-400">Must Have (MVP)</strong>. 
                   {hasScopeCreep 
                     ? " Anything over 5 features raises your risk of project failure. Move some cards to Nice to Have or Cut It!" 
                     : " Excellent discipline! Keeping the MVP focused guarantees you can build it successfully."}
@@ -691,8 +691,8 @@ export default function App() {
         {loading && features.length === 0 && (
           <div className="bg-slate-900/40 border border-slate-800/60 rounded-2xl p-16 text-center space-y-4">
             <div className="relative w-16 h-16 mx-auto">
-              <div className="absolute inset-0 rounded-full border-4 border-cyan-500/10 border-t-cyan-500 animate-spin"></div>
-              <div className="absolute inset-2 rounded-full border-4 border-indigo-500/15 border-b-indigo-400 animate-spin animate-duration-1000"></div>
+              <div className="absolute inset-0 rounded-full border border-cyan-500/10 border-t-cyan-500 animate-spin"></div>
+              <div className="absolute inset-2 rounded-full border border-indigo-500/15 border-b-indigo-400 animate-spin animate-duration-1000"></div>
             </div>
             <div className="space-y-1.5">
               <h3 className="text-md font-semibold text-slate-200">Consulting AI Product Manager</h3>
