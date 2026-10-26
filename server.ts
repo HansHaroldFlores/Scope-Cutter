@@ -249,7 +249,14 @@ CRITICAL: Return RAW JSON only. Do NOT include any explanations, introduction, m
     const deadline = Date.now() + 25000;
 
     for (let i = 0; i < models.length; i++) {
-      if (i > 0) await new Promise(resolve => setTimeout(resolve, 1000 * i));
+      // Check the budget before pausing, so the pause itself can't overrun it
+      if (i > 0) {
+        if (deadline - Date.now() < 2000 + 1000 * i) {
+          console.warn("[Scope Cutter Server] Gemini time budget used up.");
+          break;
+        }
+        await new Promise(resolve => setTimeout(resolve, 1000 * i));
+      }
       const remaining = deadline - Date.now();
       if (remaining < 2000) {
         console.warn("[Scope Cutter Server] Gemini time budget used up.");
@@ -321,7 +328,7 @@ CRITICAL: Return RAW JSON only. Do NOT include any explanations, introduction, m
           console.warn("[Scope Cutter Server] Gemini rejected the API key. Set GEMINI_API_KEY in .env and restart the server. Using heuristic fallback.");
           return res.json(getFallbackFeatures(idea));
         }
-        console.warn(`[Scope Cutter Server] ${models[i]} attempt ${i + 1} failed${Number.isFinite(status) ? ` (${status})` : ""}: ${(String(err.message ?? err).match(/"message":"([^"]+)"/)?.[1] ?? String(err.message ?? err)).slice(0, 120)}`);
+        console.warn(`[Scope Cutter Server] ${models[i]} attempt ${i + 1} failed${status >= 100 ? ` (${status})` : err.name === "TimeoutError" || err.name === "AbortError" ? " (timed out)" : ""}: ${(String(err.message ?? err).match(/"message":"([^"]+)"/)?.[1] ?? String(err.message ?? err)).slice(0, 120)}`);
       }
     }
 
