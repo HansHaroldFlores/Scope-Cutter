@@ -1,19 +1,76 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Inter", sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --radius-lg: 0.375rem;
+  --radius-xl: 0.375rem;
+  --radius-2xl: 0.375rem;
+
+  --color-slate-950: #ffffff;
+  --color-slate-900: #ffffff;
+  --color-slate-850: #e8e7e1;
+  --color-slate-800: #e8e7e1;
+  --color-slate-750: #deddd6;
+  --color-slate-700: #d8d7d0;
+  --color-slate-500: #777970;
+  --color-slate-400: #666960;
+  --color-slate-300: #4e514a;
+  --color-slate-200: #30332e;
+  --color-slate-100: #22251f;
+
+  --color-cyan-950: #edf2ee;
+  --color-cyan-900: #dce6df;
+  --color-cyan-850: #dce6df;
+  --color-cyan-600: #5d796a;
+  --color-cyan-500: #6d897a;
+  --color-cyan-400: #5d796a;
+  --color-cyan-300: #506d5e;
+  --color-cyan-200: #405b4d;
+
+  --color-emerald-950: #edf2ee;
+  --color-emerald-900: #dce6df;
+  --color-emerald-850: #dce6df;
+  --color-emerald-800: #dce6df;
+  --color-emerald-400: #5d796a;
+  --color-emerald-500: #6d897a;
+
+  --color-amber-950: #edf2ee;
+  --color-amber-900: #dce6df;
+  --color-amber-400: #5d796a;
+  --color-amber-500: #6d897a;
+
+  --color-rose-950: #edf2ee;
+  --color-rose-900: #dce6df;
+  --color-rose-800: #dce6df;
+  --color-rose-500: #6d897a;
+  --color-rose-400: #5d796a;
+
+  --color-red-950: #edf2ee;
+  --color-red-900: #dce6df;
+  --color-red-800: #dce6df;
+  --color-red-400: #5d796a;
+  --color-red-300: #506d5e;
+
+  --color-yellow-400: #5d796a;
+  --color-yellow-300: #5d796a;
+  --color-indigo-500: #6d897a;
+  --color-indigo-400: #5d796a;
 }
 
 body {
   font-family: var(--font-sans);
-  background-color: #0b0f19; /* Deep Slate/Navy Black background */
-  color: #f1f5f9;
+  background-color: #f7f6f2;
+  color: #22251f;
 }
 
-/* Custom scrollbars for columns and prompts */
+::selection {
+  background-color: #dce6df;
+  color: #22251f;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -22,9 +79,9 @@ body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #334155;
+  background: #d8d7d0;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #bcbdb5;
 }
