@@ -28,6 +28,21 @@ function isFeatureCard(value: unknown): value is FeatureCard {
     (card.category === "must" || card.category === "nice" || card.category === "cut");
 }
 
+function loadStoredArray(key: string): unknown[] {
+  try {
+    const cached: unknown = JSON.parse(localStorage.getItem(key) ?? "[]");
+    if (Array.isArray(cached)) return cached;
+  } catch {
+    // Discard malformed data or unavailable storage.
+  }
+  try {
+    localStorage.removeItem(key);
+  } catch {
+    // Keep the app usable when browser storage is unavailable.
+  }
+  return [];
+}
+
 const SAMPLE_IDEAS = [
   {
     title: "AI Travel Planner",
@@ -71,14 +86,8 @@ async function copyText(text: string): Promise<boolean> {
 export default function App() {
   const [idea, setIdea] = useState("");
   const [ideaHistory, setIdeaHistory] = useState<string[]>(() => {
-    try {
-      const cached = JSON.parse(localStorage.getItem("scope_cutter_idea_history") || "[]");
-      return Array.isArray(cached)
-        ? [...new Set(cached.filter((item): item is string => typeof item === "string" && !!item.trim()))].slice(0, 5)
-        : [];
-    } catch {
-      return [];
-    }
+    const cached = loadStoredArray("scope_cutter_idea_history");
+    return [...new Set(cached.filter((item): item is string => typeof item === "string" && !!item.trim()))].slice(0, 5);
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -114,14 +123,12 @@ export default function App() {
   // Default initial instructions if no features loaded yet
   useEffect(() => {
     // Check if we have cached state
-    const cached = localStorage.getItem("scope_cutter_features");
-    if (cached) {
-      try {
-        setFeatures(JSON.parse(cached));
-      } catch {
-        // Fallback if parsing fails
-      }
-    }
+    const seenIds = new Set<string>();
+    setFeatures(loadStoredArray("scope_cutter_features").filter(isFeatureCard).filter(card => {
+      if (seenIds.has(card.id)) return false;
+      seenIds.add(card.id);
+      return true;
+    }));
   }, []);
 
   useEffect(() => {
