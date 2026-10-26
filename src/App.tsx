@@ -401,18 +401,18 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] text-[#f1f5f9] px-4 py-8 md:px-8 selection:bg-cyan-500 selection:text-black">
+    <div className="min-h-screen bg-[#f7f6f2] text-[#22251f] px-4 py-10 md:px-8 selection:bg-cyan-500 selection:text-black">
       {/* Container to restrict max width for sleek desktop layout */}
-      <div className="max-w-7xl mx-auto space-y-8" id="scope-cutter-app">
+      <div className="max-w-7xl mx-auto space-y-10" id="scope-cutter-app">
         
         {/* Header */}
         <header className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-800 pb-6 gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-cyan-500 rounded-xl shadow-lg shadow-cyan-500/10">
+            <div className="p-2.5 bg-cyan-500 rounded-md">
               <Scissors className="w-7 h-7 text-black" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold font-display tracking-tight text-white flex items-center gap-2">
+              <h1 className="text-3xl font-bold font-sans tracking-tight text-slate-100 flex items-center gap-2">
                 Scope Cutter
                 <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-cyan-950/50 text-cyan-400 border border-cyan-850">
                   AI Decomposer
@@ -433,7 +433,7 @@ export default function App() {
                     className={`flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg transition cursor-pointer ${
                       copiedMustHaves
                         ? "bg-emerald-950/40 text-emerald-400 border border-emerald-850"
-                        : "bg-cyan-500 hover:bg-cyan-600 text-black border border-transparent shadow-md shadow-cyan-500/10"
+                        : "bg-cyan-500 hover:bg-cyan-600 text-slate-100 border border-transparent"
                     }`}
                     title="Copy all Must Have prompts to clipboard as a markdown list"
                   >
@@ -443,7 +443,7 @@ export default function App() {
                 )}
                 <button
                   onClick={downloadMVPPlan}
-                  className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition cursor-pointer"
+                  className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-md bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800 transition cursor-pointer"
                   title="Download dynamic plan markdown file"
                 >
                   <Download className="w-4 h-4 text-cyan-400" />
@@ -455,7 +455,7 @@ export default function App() {
               <button
                 type="button"
                 onClick={exportFeatures}
-                className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition cursor-pointer"
+                className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-md bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800 transition cursor-pointer"
                 title="Export feature cards as a JSON file"
               >
                 <Download className="w-4 h-4 text-cyan-400" />
@@ -465,7 +465,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => importInputRef.current?.click()}
-              className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition cursor-pointer"
+              className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-md bg-slate-900 text-slate-200 border border-slate-700 hover:bg-slate-800 transition cursor-pointer"
               title="Import feature cards from a JSON file"
             >
               <Upload className="w-4 h-4 text-cyan-400" />
@@ -484,7 +484,7 @@ export default function App() {
             {features.length > 0 && (
               <button
                 onClick={clearAll}
-                className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-lg bg-red-950/40 text-red-400 border border-red-900/50 hover:bg-red-900/30 transition cursor-pointer"
+                className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium rounded-md bg-red-950/40 text-red-400 border border-red-900/50 hover:bg-red-900/30 transition cursor-pointer"
               >
                 <Trash2 className="w-4 h-4" />
                 <span>Clear Board</span>
@@ -505,9 +505,9 @@ export default function App() {
         )}
 
         {/* Input area */}
-        <section className="bg-slate-900/50 border border-slate-800 rounded-2xl p-5 md:p-6 shadow-xl shadow-black/10 backdrop-blur-sm space-y-4">
+        <section className="bg-slate-900 border border-slate-800 rounded-md p-6 md:p-8 space-y-5">
           <div className="space-y-1">
-            <label htmlFor="idea-input" className="block text-sm font-semibold tracking-wide text-slate-200 uppercase font-display">
+            <label htmlFor="idea-input" className="block text-sm font-semibold tracking-wide text-slate-200 uppercase font-sans">
               Describe your big app idea
             </label>
             <p className="text-xs text-slate-400">
@@ -519,7 +519,7 @@ export default function App() {
             <textarea
               id="idea-input"
               name="idea-input"
-              className="w-full h-32 md:h-36 bg-[#070a13] border border-slate-800 rounded-xl p-4 pr-20 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition font-sans text-sm resize-none"
+              className="w-full h-32 md:h-36 bg-white border border-slate-800 rounded-md p-4 pr-20 text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-cyan-500 transition font-sans text-sm resize-none"
               placeholder="e.g., I want to build a fitness social network where people can post their workout streaks, find gym buddies nearby with geolocation, integrate with Strava, have a full audio streaming coach inside, and generate smart training exercises using custom machine learning algorithms..."
               value={idea}
               onChange={(e) => setIdea(e.target.value)}
@@ -536,7 +536,7 @@ export default function App() {
             {idea && (
               <button 
                 onClick={() => setIdea("")}
-                className="absolute right-3 top-3 text-xs text-slate-400 hover:text-white bg-slate-800/80 px-2 py-1 rounded"
+                className="absolute right-3 top-3 text-xs text-slate-400 hover:text-slate-100 bg-slate-800 px-2 py-1 rounded-md"
               >
                 Clear
               </button>
@@ -550,7 +550,7 @@ export default function App() {
                 <button
                   type="button"
                   onClick={() => setIdeaHistory([])}
-                  className="text-slate-400 hover:text-white underline cursor-pointer"
+                  className="text-slate-400 hover:text-slate-100 underline cursor-pointer"
                 >
                   Clear history
                 </button>
@@ -563,7 +563,7 @@ export default function App() {
                     onClick={() => setIdea(previousIdea)}
                     disabled={loading}
                     title={previousIdea}
-                    className="max-w-full truncate rounded-full border border-slate-700 bg-slate-800/50 px-3 py-1 text-xs text-slate-300 hover:border-cyan-500 hover:text-cyan-400 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="max-w-full truncate rounded-md border border-slate-700 bg-slate-900 px-3 py-1 text-xs text-slate-300 hover:border-cyan-500 hover:text-cyan-400 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {previousIdea}
                   </button>
@@ -581,7 +581,7 @@ export default function App() {
               <button
                 key={idx}
                 type="button"
-                className="px-2.5 py-1 rounded-md bg-slate-800/70 border border-slate-700/60 text-slate-300 hover:bg-slate-700/60 hover:text-white transition cursor-pointer"
+                className="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-slate-100 transition cursor-pointer"
                 onClick={() => setIdea(sample.text)}
               >
                 {sample.title}
@@ -601,17 +601,17 @@ export default function App() {
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm transition cursor-pointer ${
                 loading || !idea.trim() 
                   ? "bg-slate-800 text-slate-500 border border-slate-700 cursor-not-allowed" 
-                  : "bg-cyan-500 hover:bg-cyan-600 text-black shadow-md shadow-cyan-500/15 active:scale-95"
+                  : "bg-cyan-500 hover:bg-cyan-600 text-slate-100 active:scale-95"
               }`}
             >
               {loading ? (
                 <>
-                  <RefreshCw className="w-4 h-4 animate-spin text-white" />
+                  <RefreshCw className="w-4 h-4 animate-spin text-cyan-400" />
                   <span>Decomposing & Prioritizing...</span>
                 </>
               ) : (
                 <>
-                  <Sparkles className="w-4 h-4 text-yellow-300 fill-yellow-300" />
+                  <Sparkles className="w-4 h-4 text-cyan-400 fill-cyan-400" />
                   <span>Decompose Idea</span>
                 </>
               )}
@@ -623,11 +623,11 @@ export default function App() {
         {features.length > 0 && (
           <div className={`p-4 rounded-xl border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all duration-300 ${
             hasScopeCreep 
-              ? "bg-red-950/30 border-red-900/60 text-red-200" 
+              ? "bg-amber-950/30 border-amber-900/60 text-amber-200" 
               : "bg-cyan-950/25 border-cyan-900/50 text-cyan-200"
           }`}>
             <div className="flex items-start gap-3">
-              <div className={`p-2 rounded-lg shrink-0 ${hasScopeCreep ? "bg-red-900/30 text-red-400" : "bg-cyan-950 text-cyan-400"}`}>
+              <div className={`p-2 rounded-lg shrink-0 ${hasScopeCreep ? "bg-amber-900/30 text-amber-400" : "bg-cyan-950 text-cyan-400"}`}>
                 <AlertTriangle className="w-5 h-5" />
               </div>
               <div>
@@ -635,7 +635,7 @@ export default function App() {
                   {hasScopeCreep ? "⚠️ Scope Creep Warning Active" : "🟢 Scope Healthy"}
                 </h3>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  You have <strong className="text-white">{mustHaves.length}</strong> items in <strong className="text-emerald-400">Must Have (MVP)</strong>. 
+                  You have <strong className="text-slate-100">{mustHaves.length}</strong> items in <strong className="text-emerald-400">Must Have (MVP)</strong>. 
                   {hasScopeCreep 
                     ? " Anything over 5 features raises your risk of project failure. Move some cards to Nice to Have or Cut It!" 
                     : " Excellent discipline! Keeping the MVP focused guarantees you can build it successfully."}
@@ -643,9 +643,9 @@ export default function App() {
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-800/80 text-xs shrink-0 font-mono">
+            <div className="flex items-center gap-1.5 bg-slate-900 px-3 py-1.5 rounded-lg border border-slate-800 text-xs shrink-0 font-sans">
               <span>MVP Count:</span>
-              <span className={`font-bold ${hasScopeCreep ? "text-red-400 font-bold" : "text-emerald-400 font-bold"}`}>
+              <span className={`font-bold ${hasScopeCreep ? "text-amber-400 font-bold" : "text-emerald-400 font-bold"}`}>
                 {mustHaves.length} / 5 max
               </span>
             </div>
@@ -665,7 +665,7 @@ export default function App() {
             <button
               onClick={handleDecompose}
               disabled={loading}
-              className="px-4 py-2 bg-red-900/30 hover:bg-red-900/50 text-white rounded-lg border border-red-800 text-xs font-semibold cursor-pointer transition shrink-0 active:scale-95"
+              className="px-4 py-2 bg-red-900/30 hover:bg-red-900/50 text-slate-100 rounded-lg border border-red-800 text-xs font-semibold cursor-pointer transition shrink-0 active:scale-95"
             >
               Retry Decompose
             </button>
@@ -691,8 +691,8 @@ export default function App() {
         {loading && features.length === 0 && (
           <div className="bg-slate-900/40 border border-slate-800/60 rounded-2xl p-16 text-center space-y-4">
             <div className="relative w-16 h-16 mx-auto">
-              <div className="absolute inset-0 rounded-full border-4 border-cyan-500/10 border-t-cyan-500 animate-spin"></div>
-              <div className="absolute inset-2 rounded-full border-4 border-indigo-500/15 border-b-indigo-400 animate-spin animate-duration-1000"></div>
+              <div className="absolute inset-0 rounded-full border border-cyan-500/10 border-t-cyan-500 animate-spin"></div>
+              <div className="absolute inset-2 rounded-full border border-indigo-500/15 border-b-indigo-400 animate-spin animate-duration-1000"></div>
             </div>
             <div className="space-y-1.5">
               <h3 className="text-md font-semibold text-slate-200">Consulting AI Product Manager</h3>
@@ -715,7 +715,7 @@ export default function App() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search by title or description"
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500"
+                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-cyan-500"
               />
             </div>
             <div className="space-y-1.5">
@@ -726,7 +726,7 @@ export default function App() {
                 id="board-effort" name="board-effort"
                 value={effortFilter}
                 onChange={(e) => setEffortFilter(e.target.value as EffortLevel | "All")}
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-cyan-500"
+                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-cyan-500"
               >
                 <option value="All">All</option>
                 <option value="Small">Small</option>
@@ -751,9 +751,9 @@ export default function App() {
               <div className="flex items-center justify-between border-b border-slate-850 pb-2.5">
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-                  <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-mono">Must Have (MVP)</h2>
+                  <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-sans">Must Have (MVP)</h2>
                 </div>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/50 font-semibold font-mono">
+                <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-semibold font-sans">
                   {mustHaves.length} cards · {getEffortScore(mustHaves)} pts
                 </span>
               </div>
@@ -788,9 +788,9 @@ export default function App() {
               <div className="flex items-center justify-between border-b border-slate-850 pb-2.5">
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
-                  <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-mono">Nice to Have</h2>
+                  <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-sans">Nice to Have</h2>
                 </div>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/50 font-semibold font-mono">
+                <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-semibold font-sans">
                   {niceToHaves.length} cards · {getEffortScore(niceToHaves)} pts
                 </span>
               </div>
@@ -824,9 +824,9 @@ export default function App() {
               <div className="flex items-center justify-between border-b border-slate-850 pb-2.5">
                 <div className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-slate-700"></span>
-                  <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-mono">Cut It</h2>
+                  <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-sans">Cut It</h2>
                 </div>
-                <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/50 font-semibold font-mono">
+                <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-semibold font-sans">
                   {cutIts.length} cards · {getEffortScore(cutIts)} pts
                 </span>
               </div>
@@ -858,13 +858,13 @@ export default function App() {
       {undoState && (
         <div
           role="status"
-          className="fixed bottom-4 left-4 right-4 sm:left-auto z-[60] flex items-center justify-between gap-4 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-200 shadow-xl"
+          className="fixed bottom-4 left-4 right-4 sm:left-auto z-[60] flex items-center justify-between gap-4 rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm text-slate-200"
         >
           <span>{undoState.message}</span>
           <button
             type="button"
             onClick={undoDelete}
-            className="font-semibold text-cyan-400 hover:text-cyan-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-400 rounded cursor-pointer"
+            className="font-semibold text-cyan-400 hover:text-cyan-300 focus-visible:outline focus-visible:outline-1 focus-visible:outline-cyan-400 rounded cursor-pointer"
           >
             Undo
           </button>
@@ -873,8 +873,8 @@ export default function App() {
 
       {/* --- ADD CARD MODAL --- */}
       {showAddForm && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-[#0e1424] border border-slate-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white border border-slate-800 rounded-2xl w-full max-w-md overflow-hidden">
             <div className="bg-slate-900/80 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
               <h3 className="font-bold text-slate-100 flex items-center gap-2">
                 <Plus className="w-5 h-5 text-cyan-400" />
@@ -882,7 +882,7 @@ export default function App() {
               </h3>
               <button 
                 onClick={() => setShowAddForm(null)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-400 hover:text-slate-100"
               >
                 ✕
               </button>
@@ -896,7 +896,7 @@ export default function App() {
                   name="new-card-title"
                   type="text"
                   placeholder="e.g., Google Maps Store Finder"
-                  className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-white border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                 />
@@ -909,7 +909,7 @@ export default function App() {
                   name="new-card-description"
                   type="text"
                   placeholder="Allows searchers to browse stores on Google Map viewport"
-                  className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-white border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                   value={newDesc}
                   onChange={(e) => setNewDesc(e.target.value)}
                 />
@@ -921,7 +921,7 @@ export default function App() {
                   <select
                     id="new-card-effort"
                     name="new-card-effort"
-                    className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                     value={newEffort}
                     onChange={(e) => setNewEffort(e.target.value as EffortLevel)}
                   >
@@ -941,7 +941,7 @@ export default function App() {
                   id="new-card-prompt"
                   name="new-card-prompt"
                   placeholder="Specify exact tech stack, API requirements, visual styling instruction, or data structures for the AI builder..."
-                  className="w-full h-24 bg-slate-950 border border-slate-850 rounded-lg p-3 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"
+                  className="w-full h-24 bg-white border border-slate-850 rounded-lg p-3 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 resize-none"
                   value={newPrompt}
                   onChange={(e) => setNewPrompt(e.target.value)}
                 />
@@ -957,7 +957,7 @@ export default function App() {
               </button>
               <button
                 onClick={() => addCustomCard(showAddForm)}
-                className="px-4 py-2 rounded-lg text-xs font-semibold bg-cyan-500 hover:bg-cyan-600 text-black transition"
+                className="px-4 py-2 rounded-lg text-xs font-semibold bg-cyan-500 hover:bg-cyan-600 text-slate-100 transition"
               >
                 Create Feature
               </button>
@@ -968,15 +968,15 @@ export default function App() {
 
       {/* --- EDIT CARD MODAL --- */}
       {editingCard && (
-        <div className="fixed inset-0 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-          <div className="bg-[#0e1424] border border-slate-800 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white border border-slate-800 rounded-2xl w-full max-w-md overflow-hidden">
             <div className="bg-slate-900/80 px-6 py-4 border-b border-slate-800 flex items-center justify-between">
               <h3 className="font-bold text-slate-100 flex items-center gap-2">
                 <span>Edit Feature Card</span>
               </h3>
               <button 
                 onClick={() => setEditingCard(null)}
-                className="text-slate-400 hover:text-white"
+                className="text-slate-400 hover:text-slate-100"
               >
                 ✕
               </button>
@@ -989,7 +989,7 @@ export default function App() {
                   id="edit-card-title"
                   name="edit-card-title"
                   type="text"
-                  className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-white border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                   value={editingCard.title}
                   onChange={(e) => setEditingCard({ ...editingCard, title: e.target.value })}
                 />
@@ -1001,7 +1001,7 @@ export default function App() {
                   id="edit-card-description"
                   name="edit-card-description"
                   type="text"
-                  className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-white border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                   value={editingCard.description}
                   onChange={(e) => setEditingCard({ ...editingCard, description: e.target.value })}
                 />
@@ -1013,7 +1013,7 @@ export default function App() {
                   <select
                     id="edit-card-effort"
                     name="edit-card-effort"
-                    className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                     value={editingCard.effort}
                     onChange={(e) => setEditingCard({ ...editingCard, effort: e.target.value as EffortLevel })}
                   >
@@ -1028,7 +1028,7 @@ export default function App() {
                   <select
                     id="edit-card-category"
                     name="edit-card-category"
-                    className="w-full bg-slate-950 border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-slate-850 rounded-lg px-3 py-2 text-sm text-slate-200 focus:outline-none focus:border-cyan-500"
                     value={editingCard.category}
                     onChange={(e) => setEditingCard({ ...editingCard, category: e.target.value as FeatureCategory })}
                   >
@@ -1044,7 +1044,7 @@ export default function App() {
                 <textarea
                   id="edit-card-prompt"
                   name="edit-card-prompt"
-                  className="w-full h-36 bg-slate-950 border border-slate-850 rounded-lg p-3 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-mono resize-none"
+                  className="w-full h-36 bg-white border border-slate-850 rounded-lg p-3 text-xs text-slate-200 focus:outline-none focus:border-cyan-500 font-sans resize-none"
                   value={editingCard.prompt}
                   onChange={(e) => setEditingCard({ ...editingCard, prompt: e.target.value })}
                 />
@@ -1072,7 +1072,7 @@ export default function App() {
                 </button>
                 <button
                   onClick={updateCard}
-                  className="px-4 py-2 rounded-lg text-xs font-semibold bg-cyan-500 hover:bg-cyan-600 text-black transition"
+                  className="px-4 py-2 rounded-lg text-xs font-semibold bg-cyan-500 hover:bg-cyan-600 text-slate-100 transition"
                 >
                   Save Changes
                 </button>
@@ -1101,11 +1101,11 @@ export default function App() {
         key={f.id}
         draggable
         onDragStart={(e) => handleDragStart(e, f.id)}
-        className={`group relative bg-slate-900 border border-slate-800/80 ${color.leftBorder} border-l-4 rounded-xl p-4 space-y-3 shadow-lg hover:border-slate-750 transition-all duration-200 cursor-grab active:cursor-grabbing hover:shadow-black/20`}
+        className={`group relative bg-slate-900 border border-slate-800 ${color.leftBorder} rounded-xl p-5 space-y-4 hover:border-slate-750 transition-all duration-200 cursor-grab active:cursor-grabbing`}
       >
         {/* Card Header */}
         <div className="flex items-start justify-between gap-2">
-          <h4 className="font-bold text-sm tracking-tight text-white group-hover:text-cyan-400 transition">
+          <h4 className="font-semibold text-sm tracking-tight text-slate-100 group-hover:text-cyan-400 transition">
             {f.title}
           </h4>
           <span className={`text-[10px] uppercase font-bold px-2 py-0.5 rounded-md border ${color.bg} ${color.text} ${color.border} shrink-0`}>
@@ -1126,7 +1126,7 @@ export default function App() {
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition flex-1 justify-center cursor-pointer ${
               isCopied 
                 ? "bg-emerald-900/30 text-emerald-400 border border-emerald-800" 
-                : "bg-[#070a13] text-slate-300 border border-slate-800 hover:bg-slate-800 hover:text-white"
+                : "bg-white text-slate-300 border border-slate-800 hover:bg-slate-800 hover:text-slate-100"
             }`}
             title="Copy a highly detailed build prompt for this feature to paste into an AI builder"
           >
@@ -1146,7 +1146,7 @@ export default function App() {
           {/* Quick Edit */}
           <button
             onClick={() => setEditingCard({ ...f })}
-            className="p-1.5 rounded-lg bg-[#070a13] border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer text-xs"
+            className="p-1.5 rounded-lg bg-white border border-slate-800 text-slate-400 hover:text-slate-100 hover:bg-slate-800 transition cursor-pointer text-xs"
             title="Edit feature details"
           >
             Edit
@@ -1162,7 +1162,7 @@ export default function App() {
             {f.category !== "must" && (
               <button
                 onClick={() => moveCard(f.id, 'left')}
-                className="p-1 rounded bg-slate-800/40 hover:bg-slate-800 text-slate-300 transition cursor-pointer"
+                className="p-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 transition cursor-pointer"
                 title="Move Left"
               >
                 <ArrowLeft className="w-3 h-3" />
@@ -1171,7 +1171,7 @@ export default function App() {
             {f.category !== "cut" && (
               <button
                 onClick={() => moveCard(f.id, 'right')}
-                className="p-1 rounded bg-slate-800/40 hover:bg-slate-800 text-slate-300 transition cursor-pointer"
+                className="p-1 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 transition cursor-pointer"
                 title="Move Right"
               >
                 <ArrowRight className="w-3 h-3" />
