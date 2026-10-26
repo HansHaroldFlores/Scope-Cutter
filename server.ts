@@ -3,6 +3,7 @@ import path from "path";
 import dotenv from "dotenv";
 import { GoogleGenAI, Type } from "@google/genai";
 import { createServer as createViteServer } from "vite";
+import type { FeatureCard } from "./src/types";
 
 // Load environment variables
 dotenv.config();
@@ -324,12 +325,37 @@ CRITICAL: Return RAW JSON only. Do NOT include any explanations, introduction, m
       }
     }
 
-    if (!parsedData) {
+    const validFeatures = (Array.isArray(parsedData?.features) ? parsedData.features : [])
+      .filter((card: unknown): card is FeatureCard => {
+        if (!card || typeof card !== "object" || Array.isArray(card)) return false;
+        const feature = card as Record<string, unknown>;
+        return ["id", "title", "description", "prompt"].every(
+          key => typeof feature[key] === "string" && feature[key].trim().length > 0
+        ) &&
+          (feature.effort === "Small" || feature.effort === "Medium" || feature.effort === "Large") &&
+          (feature.category === "must" || feature.category === "nice" || feature.category === "cut");
+      });
+
+    if (validFeatures.length === 0) {
       console.warn("[Scope Cutter Server] Gemini failed or overloaded. Falling back to rule-based fallback generation.");
       return res.json(getFallbackFeatures(idea));
     }
 
-    res.json(parsedData);
+    const reservedIds = new Set<string>(validFeatures.map(card => card.id));
+    const seenIds = new Set<string>();
+    const features = validFeatures.map(card => {
+      let id = card.id;
+      let suffix = 2;
+      if (seenIds.has(id)) {
+        do {
+          id = `${card.id}-${suffix++}`;
+        } while (reservedIds.has(id) || seenIds.has(id));
+      }
+      seenIds.add(id);
+      return { ...card, id };
+    });
+
+    res.json({ ...parsedData, features });
   } catch (error: any) {
     console.error("Gemini decomposition error, using offline fallback:", error);
     try {
