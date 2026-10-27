@@ -22,14 +22,7 @@ function getGeminiClient(): GoogleGenAI {
     if (!apiKey || apiKey === "MY_GEMINI_API_KEY" || apiKey === "your_actual_api_key") {
       throw new Error("GEMINI_API_KEY is not configured or still has the placeholder value. Set GEMINI_API_KEY in the project's .env file and restart the server.");
     }
-    aiClient = new GoogleGenAI({
-      apiKey,
-      httpOptions: {
-        headers: {
-          "User-Agent": "aistudio-build",
-        },
-      },
-    });
+    aiClient = new GoogleGenAI({ apiKey });
   }
   return aiClient;
 }
@@ -215,7 +208,7 @@ app.post("/api/decompose", async (req, res) => {
       ];
     }
 
-    return { features: featuresList };
+    return { features: featuresList, source: "fallback" };
   };
 
   try {
@@ -362,7 +355,7 @@ CRITICAL: Return RAW JSON only. Do NOT include any explanations, introduction, m
       return { ...card, id };
     });
 
-    res.json({ ...parsedData, features });
+    res.json({ ...parsedData, features, source: "gemini" });
   } catch (error: any) {
     console.error("Gemini decomposition error, using offline fallback:", error);
     try {
