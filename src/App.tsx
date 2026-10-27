@@ -91,6 +91,7 @@ export default function App() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [usedFallback, setUsedFallback] = useState(false);
   const [importError, setImportError] = useState<string | null>(null);
   const [features, setFeatures] = useState<FeatureCard[]>([]);
   const importInputRef = useRef<HTMLInputElement>(null);
@@ -150,6 +151,7 @@ export default function App() {
     setIdeaHistory(history => [submittedIdea, ...history.filter(item => item !== submittedIdea)].slice(0, 5));
     setLoading(true);
     setError(null);
+    setUsedFallback(false);
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => {
@@ -174,10 +176,10 @@ export default function App() {
       }
 
       const data = await response.json();
-      console.log("[Scope Cutter Client] Raw parsed response:", data);
 
       if (data && Array.isArray(data.features)) {
         saveToCache(data.features);
+        setUsedFallback(data.source === "fallback");
       } else {
         throw new Error("Invalid structure returned by the scope server.");
       }
@@ -306,6 +308,8 @@ export default function App() {
   const visibleCutIts = cutIts.filter(matchesFilters);
   const getEffortScore = (cards: FeatureCard[]) =>
     cards.reduce((total, card) => total + ({ Small: 1, Medium: 3, Large: 5 }[card.effort] || 0), 0);
+
+  const countLabel = (count: number, noun: string) => `${count} ${noun}${count === 1 ? "" : "s"}`;
 
   const hasScopeCreep = mustHaves.length > 5;
 
@@ -642,7 +646,7 @@ export default function App() {
                   {hasScopeCreep ? "⚠️ Scope Creep Warning Active" : "🟢 Scope Healthy"}
                 </h3>
                 <p className="text-xs text-slate-300 mt-0.5">
-                  You have <strong className="text-slate-100">{mustHaves.length}</strong> items in <strong className="text-emerald-400">Must Have (MVP)</strong>. 
+                  You have <strong className="text-slate-100">{mustHaves.length}</strong> {mustHaves.length === 1 ? "item" : "items"} in <strong className="text-emerald-400">Must Have (MVP)</strong>. 
                   {hasScopeCreep 
                     ? " Anything over 5 features raises your risk of project failure. Move some cards to Nice to Have or Cut It!" 
                     : " Excellent discipline! Keeping the MVP focused guarantees you can build it successfully."}
@@ -655,6 +659,17 @@ export default function App() {
               <span className={`font-bold ${hasScopeCreep ? "text-amber-400 font-bold" : "text-emerald-400 font-bold"}`}>
                 {mustHaves.length} / 5 max
               </span>
+            </div>
+          </div>
+        )}
+
+        {/* Fallback notice: cards came from the offline generator, not Gemini */}
+        {usedFallback && !error && features.length > 0 && (
+          <div role="status" className="bg-amber-950/40 border border-amber-900/60 p-4 rounded-xl text-sm flex items-start gap-3">
+            <Info className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <span className="font-semibold block text-amber-400">Showing offline sample features</span>
+              <p className="text-xs text-slate-300">Gemini was unavailable or the API key was rejected, so these cards come from the built-in generator. Check the server terminal, then try again for AI-tailored results.</p>
             </div>
           </div>
         )}
@@ -761,7 +776,7 @@ export default function App() {
                   <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-sans">Must Have (MVP)</h2>
                 </div>
                 <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-semibold font-sans">
-                  {mustHaves.length} cards · {getEffortScore(mustHaves)} pts
+                  {countLabel(mustHaves.length, "card")} · {getEffortScore(mustHaves)} pts
                 </span>
               </div>
 
@@ -798,7 +813,7 @@ export default function App() {
                   <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-sans">Nice to Have</h2>
                 </div>
                 <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-semibold font-sans">
-                  {niceToHaves.length} cards · {getEffortScore(niceToHaves)} pts
+                  {countLabel(niceToHaves.length, "card")} · {getEffortScore(niceToHaves)} pts
                 </span>
               </div>
 
@@ -834,7 +849,7 @@ export default function App() {
                   <h2 className="text-xs font-semibold tracking-wider uppercase text-slate-400 font-sans">Cut It</h2>
                 </div>
                 <span className="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700 font-semibold font-sans">
-                  {cutIts.length} cards · {getEffortScore(cutIts)} pts
+                  {countLabel(cutIts.length, "card")} · {getEffortScore(cutIts)} pts
                 </span>
               </div>
 
